@@ -9,8 +9,8 @@
     </style>
     </head>
     <body>
-        <div>TODO write content</div>
         
+        <script src="/socket.io/socket.io.js"></script>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js'></script>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.17.0/TweenMax.min.js'></script>
         
@@ -20,7 +20,13 @@ TODO
 sine / morph in y positions ?
 horizontal movement euler + quarternion rotation around in between axis ?
 */
+
+
 var isMouseDown = true;
+
+socket.on('tilt', (value) => {
+    isMouseDown = value ? true : false  
+})
 
 var emptySlot = "emptySlot", planeTop = "planeTop", planeBottom = "planeBottom";
 

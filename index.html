@@ -23,11 +23,17 @@ horizontal movement euler + quarternion rotation around in between axis ?
 
 
 const socket = io();
-var isMouseDown = true;
+let isMouseDown = true;
 
 socket.on('tilt', (value) => {
-    isMouseDown = value ? true : false  
+    isMouseDown = true    
 })
+
+socket.on('tiltStop', (value) => {
+    isMouseDown = false
+    
+})
+
 
 var emptySlot = "emptySlot", planeTop = "planeTop", planeBottom = "planeBottom";
 

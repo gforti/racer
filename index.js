@@ -55,7 +55,8 @@ http.listen(3005);
 console.log(`Server running at http://${host_ip}:3005/index.html`);
 
 
-
+let start = Date.now()
+let isTilting = false
 io.sockets.on('connection', function (socket) {// WebSocket Connection
   let tiltvalue = 0; //static variable for current status
   sensor.watch(function (err, value) { //Watch for hardware interrupts on pushButton
@@ -64,9 +65,22 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
       return;
     }
     tiltvalue = value;
-    socket.emit('tilt', tiltvalue); //send button status to client
+     //send button status to client
+    start = Date.now()
   });  
 });
+
+setInterval(checkTilt, 100)
+
+checkTilt() {
+    if ( isTilting && Date.now() - start > 2000 ) {
+        socket.emit('tiltStop');
+        isTilting = false
+    } else if(!isTilting && Date.now() - start < 2000) {
+        socket.emit('tilt');
+        isTilting = true
+    }
+}
 
 
 function unexportOnClose() { //function to run when exiting program 

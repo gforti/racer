@@ -4,7 +4,7 @@ const Gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
 const sensor = new Gpio(17, 'in', 'both'); //use GPIO pin 17 as input, and 'both' button presses, and releases should be handled
 
 
-const http = require('http');
+const http = require('http').createServer(app);
 const url = require('url');
 const fileSystem = require('fs');
 const ip = require('ip')
@@ -12,7 +12,7 @@ const host_ip = ip.address()
 const io = require('socket.io')(http) //require socket.io module and pass the http object (server)
 
 
-http.createServer(function (request, response) {
+function app (request, response) {
 
     var pathName = url.parse(request.url).pathname;
     var fileName = pathName.substr(1); /* lets remove the "/" from the name */
@@ -46,7 +46,10 @@ http.createServer(function (request, response) {
     }
 
 
-}).listen(3005);
+}
+
+
+http.listen(3005);
 
 // Console will print the message
 console.log(`Server running at http://${host_ip}:3005/index.html`);

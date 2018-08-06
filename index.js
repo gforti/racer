@@ -55,7 +55,7 @@ http.listen(3005);
 console.log(`Server running at http://${host_ip}:3005/index.html`);
 
 
-let start = Date.now()
+let start = 0
 let isTilting = false
 io.sockets.on('connection', function (socket) {// WebSocket Connection
   let tiltvalue = 0; //static variable for current status
@@ -72,12 +72,12 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
 
 setInterval(checkTilt, 100)
 
-checkTilt() {
+function checkTilt() {
     if ( isTilting && Date.now() - start > 2000 ) {
-        socket.emit('tiltStop');
+        io.sockets.emit('tiltStop');
         isTilting = false
     } else if(!isTilting && Date.now() - start < 2000) {
-        socket.emit('tilt');
+        io.sockets.emit('tilt');
         isTilting = true
     }
 }
